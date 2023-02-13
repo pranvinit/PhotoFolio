@@ -1,5 +1,5 @@
 .albumForm {
-  width: 40vw;
+  width: 50vw;
   margin: 50px auto;
   margin-bottom: 30px;
   padding: 20px;
@@ -44,7 +44,8 @@
 .albumForm form button {
   border: none;
   outline: none;
-  padding: 7px 10px;
+  width: 100px;
+  padding-block: 7px;
   border-radius: 7px;
   font-size: 1.1rem;
   font-weight: 600;

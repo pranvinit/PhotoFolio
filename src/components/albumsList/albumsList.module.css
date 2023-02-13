@@ -1,3 +1,32 @@
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.top h3 {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.top button {
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: 700;
+  color: rgb(0, 119, 255);
+  background-color: rgba(0, 119, 255, 0.1);
+  border: 2px solid rgb(0, 119, 255);
+  cursor: pointer;
+}
+.top .active {
+  color: rgb(255, 19, 0);
+  background-color: rgba(255, 19, 0, 0.1);
+  border: 2px solid rgb(255, 19, 0);
+}
+
 .albumsList {
   display: grid;
   grid-template: repeat(1, 150px) / repeat(auto-fit, minmax(150px, 1fr));

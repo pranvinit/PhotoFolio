@@ -3,7 +3,6 @@ import { useState } from "react";
 
 // components imports
 import { Navbar } from "./components/navbar/Navbar";
-import { AlbumForm } from "./components/albumForm/AlbumForm";
 import { AlbumsList } from "./components/albumsList/AlbumsList";
 
 // mock data
@@ -16,7 +15,6 @@ function App() {
     <div className={styles.App}>
       <Navbar />
       <div className={styles.content}>
-        <AlbumForm />
         <AlbumsList albums={albums} />
       </div>
     </div>
