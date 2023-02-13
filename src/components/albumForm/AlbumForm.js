@@ -1,13 +1,16 @@
 import styles from "./albumForm.module.css";
 import { useRef } from "react";
 
-export const AlbumForm = () => {
+export const AlbumForm = ({ onAdd }) => {
   const albumNameInput = useRef();
+
+  const handleClear = () => (albumNameInput.current.value = "");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const albumName = albumNameInput.current.value;
-    console.log(albumName);
+    onAdd(albumName);
+    handleClear();
   };
 
   return (
@@ -15,10 +18,7 @@ export const AlbumForm = () => {
       <span>Create an album</span>
       <form onSubmit={handleSubmit}>
         <input placeholder="Album Name" ref={albumNameInput} />
-        <button
-          type="button"
-          onClick={() => (albumNameInput.current.value = "")}
-        >
+        <button type="button" onClick={handleClear}>
           Clear
         </button>
         <button>Create</button>

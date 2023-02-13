@@ -1,12 +1,17 @@
 import styles from "./imageForm.module.css";
 import { useRef } from "react";
 
-export const ImageForm = ({ albumName }) => {
+export const ImageForm = ({ albumName, onAdd }) => {
   const imageTitleInput = useRef();
   const imageUrlInput = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const title = imageTitleInput.current.value;
+    const url = imageUrlInput.current.value;
+
+    onAdd({ title, url });
+    handleClear();
   };
 
   const handleClear = () => {
@@ -16,7 +21,7 @@ export const ImageForm = ({ albumName }) => {
 
   return (
     <div className={styles.imageForm}>
-      <span>Add image in {albumName}</span>
+      <span>Add image to {albumName}</span>
 
       <form onSubmit={handleSubmit}>
         <input placeholder="Title" ref={imageTitleInput} />

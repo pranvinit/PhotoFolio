@@ -29,7 +29,7 @@
 
 .imageList {
   display: grid;
-  grid-template: repeat(1, 150px) / repeat(auto-fit, minmax(175px, 1fr));
+  grid-template: repeat(1, 150px) / repeat(auto-fit, minmax(175px, 0.5fr));
   grid-auto-flow: row;
   grid-auto-rows: 150px;
   gap: 20px;
@@ -70,4 +70,25 @@
 
 .delete.active {
   display: block;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  margin-right: 30px;
+}
+
+.search input {
+  outline: none;
+  padding: 5px;
+  padding-left: 10px;
+  font-size: 1.1rem;
+  font-weight: 300;
+}
+
+.search img {
+  width: 30px;
+  cursor: pointer;
 }

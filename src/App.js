@@ -1,21 +1,22 @@
 import styles from "./App.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // components imports
 import { Navbar } from "./components/navbar/Navbar";
 import { AlbumsList } from "./components/albumsList/AlbumsList";
 
-// mock data
-import { albumsData } from "./static/mock";
+// react toasts
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import { toast } from "react-toastify";
 
 function App() {
-  const [albums, setAlbums] = useState(albumsData);
-
   return (
     <div className={styles.App}>
+      <ToastContainer />
       <Navbar />
       <div className={styles.content}>
-        <AlbumsList albums={albums} />
+        <AlbumsList />
       </div>
     </div>
   );

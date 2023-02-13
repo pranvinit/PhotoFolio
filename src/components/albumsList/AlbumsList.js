@@ -1,17 +1,26 @@
 import styles from "./albumsList.module.css";
 import { useState } from "react";
-import { ImagesList } from "../imagesList/ImagesList";
+import { toast } from "react-toastify";
 
 // components imports
 import { AlbumForm } from "../albumForm/AlbumForm";
+import { ImagesList } from "../imagesList/ImagesList";
 
 // mock data
-import { imagesData } from "../../static/mock";
+import { albumsData } from "../../static/mock";
 
-export const AlbumsList = ({ albums }) => {
+export const AlbumsList = () => {
+  const [albums, setAlbums] = useState(albumsData);
+
+  const handleAdd = (name) => {
+    if (albums.find((a) => a.name === name))
+      return toast.error("Album name already in use.");
+    const newAlbum = { id: Date.now(), name };
+    setAlbums((prev) => [...prev, newAlbum]);
+  };
+
   const [createAlbumIntent, setCreateAlbumIntent] = useState(false);
   const [activeAlbum, setActiveAlbum] = useState(null);
-  const [images, setImages] = useState(imagesData);
 
   const handleClick = (name) => {
     if (activeAlbum === name) return setActiveAlbum(null);
@@ -20,18 +29,21 @@ export const AlbumsList = ({ albums }) => {
 
   if (albums.length === 0) {
     return (
-      <div className={styles.top}>
-        <h3>No albums found.</h3>
-        <button onClick={() => setCreateAlbumIntent(!createAlbumIntent)}>
-          {!createAlbumIntent ? "Add image" : "Cancel"}
-        </button>
-      </div>
+      <>
+        <div className={styles.top}>
+          <h3>No albums found.</h3>
+          <button onClick={() => setCreateAlbumIntent(!createAlbumIntent)}>
+            {!createAlbumIntent ? "Add image" : "Cancel"}
+          </button>
+        </div>
+        {createAlbumIntent && <AlbumForm onAdd={handleAdd} />}
+      </>
     );
   }
 
   return (
     <>
-      {createAlbumIntent && <AlbumForm />}
+      {createAlbumIntent && <AlbumForm onAdd={handleAdd} />}
       <div className={styles.top}>
         <h3>Your albums</h3>
         <button
@@ -44,6 +56,7 @@ export const AlbumsList = ({ albums }) => {
       <div className={styles.albumsList}>
         {albums.map((album) => (
           <div
+            key={album.id}
             className={`${styles.album} ${
               album.name === activeAlbum && styles.active
             }`}
@@ -54,7 +67,7 @@ export const AlbumsList = ({ albums }) => {
           </div>
         ))}
       </div>
-      {activeAlbum && <ImagesList albumName={activeAlbum} images={images} />}
+      {activeAlbum && <ImagesList albumName={activeAlbum} />}
     </>
   );
 };
