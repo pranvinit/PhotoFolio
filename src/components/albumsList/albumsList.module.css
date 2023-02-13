@@ -1,3 +1,10 @@
+.loader {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .top {
   display: flex;
   align-items: center;
@@ -48,6 +55,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  transition: border-color 0.3s;
 }
 
 .album span {
@@ -66,10 +74,10 @@
   margin-bottom: 30px;
 }
 
-.active {
-  border: 5px solid #0077ff;
+.album:hover {
+  border-color: #0077ff;
   color: #fff;
 }
-.active span {
+.album:hover span {
   background-color: #0077ff;
 }

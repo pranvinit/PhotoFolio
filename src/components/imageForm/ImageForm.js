@@ -1,7 +1,13 @@
 import styles from "./imageForm.module.css";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
-export const ImageForm = ({ albumName, onAdd }) => {
+export const ImageForm = ({
+  updateIntent,
+  albumName,
+  onAdd,
+  onUpdate,
+  loading,
+}) => {
   const imageTitleInput = useRef();
   const imageUrlInput = useRef();
 
@@ -10,7 +16,8 @@ export const ImageForm = ({ albumName, onAdd }) => {
     const title = imageTitleInput.current.value;
     const url = imageUrlInput.current.value;
 
-    onAdd({ title, url });
+    if (!updateIntent) onAdd({ title, url });
+    else onUpdate({ title, url });
     handleClear();
   };
 
@@ -19,18 +26,33 @@ export const ImageForm = ({ albumName, onAdd }) => {
     imageUrlInput.current.value = "";
   };
 
+  const handleDefaultValues = () => {
+    imageTitleInput.current.value = updateIntent.title;
+    imageUrlInput.current.value = updateIntent.url;
+  };
+
+  useEffect(() => {
+    if (updateIntent) {
+      handleDefaultValues();
+    }
+  }, [updateIntent]);
+
   return (
     <div className={styles.imageForm}>
-      <span>Add image to {albumName}</span>
+      <span>
+        {!updateIntent
+          ? `Add image to ${albumName}`
+          : `Update image ${updateIntent.title}`}
+      </span>
 
       <form onSubmit={handleSubmit}>
         <input placeholder="Title" ref={imageTitleInput} />
         <input placeholder="Image URL" ref={imageUrlInput} />
         <div className={styles.actions}>
-          <button type="button" onClick={handleClear}>
+          <button type="button" onClick={handleClear} disabled={loading}>
             Clear
           </button>
-          <button>Add</button>
+          <button disabled={loading}>{!updateIntent ? "Add" : "Update"}</button>
         </div>
       </form>
     </div>

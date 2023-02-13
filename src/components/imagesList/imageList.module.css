@@ -1,8 +1,32 @@
+.loader {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-block: 30px;
+}
+
+.top span {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: #fcfcfc;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 30px;
+  cursor: pointer;
+}
+
+.top span img {
+  width: 30px;
 }
 
 .top h3 {
@@ -54,7 +78,8 @@
   object-fit: cover;
 }
 
-.delete {
+.delete,
+.update {
   outline: none;
   border: none;
   position: absolute;
@@ -64,12 +89,23 @@
   transition: 0.3s;
 }
 
-.delete img {
+.delete img,
+.update img {
   width: 35px;
 }
 
-.delete.active {
+.delete.active,
+.update.active {
   display: block;
+}
+
+.update {
+  right: 30px;
+}
+
+.update:hover,
+.delete:hover {
+  transform: scale(0.95);
 }
 
 .search {
