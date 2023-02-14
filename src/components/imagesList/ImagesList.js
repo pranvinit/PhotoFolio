@@ -1,5 +1,5 @@
 import styles from "./imageList.module.css";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useReducer } from "react";
 import { toast } from "react-toastify";
 import Spinner from "react-spinner-material";
 
@@ -7,54 +7,26 @@ import Spinner from "react-spinner-material";
 import { ImageForm } from "../imageForm/ImageForm";
 import { Carousel } from "../carousel/Carousel";
 
-// firebase imports
-import {
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  Timestamp,
-  query,
-  orderBy,
-  doc,
-} from "firebase/firestore";
-import { db } from "../../firebase";
+// ADD FIREBASE IMPORTS HERE
+
+// mock data
+import { data } from "../../static/mock";
+let imagesData = data.images;
 
 // storing images
 let IMAGES;
 
-// mock data
-// import { imagesData } from "../../static/mock";
-
 export const ImagesList = ({ albumId, albumName, onBack }) => {
-  const [images, setImages] = useState([]);
+  // REMOVE THIS
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  // STORE IMAGES IN STATE HERE
   const [loading, setLoading] = useState(false);
 
   const [searchIntent, setSearchIntent] = useState(false);
   const searchInput = useRef();
 
-  // async function
-  const getImages = async () => {
-    setLoading(true);
-    const imagesRef = collection(db, "albums", albumId, "images");
-    const imagesSnapshot = await getDocs(
-      query(imagesRef, orderBy("created", "desc"))
-    );
-    const imagesData = imagesSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setImages(imagesData);
-    IMAGES = imagesData;
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getImages();
-  }, []);
-
-  const [addImageIntent, setAddImageIntent] = useState(false);
+  // ADD STATES TO CONDITIONALLY RENDER IMAGEFORM IF THE ADD BUTTON IS CLICKED
   const [imgLoading, setImgLoading] = useState(false);
 
   const [updateImageIntent, setUpdateImageIntent] = useState(false);
@@ -63,12 +35,16 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
   const [activeHoverImageIndex, setActiveHoverImageIndex] = useState(null);
 
   const handleNext = () => {
-    if (activeImageIndex === images.length - 1) return setActiveImageIndex(0);
+    // USE STATE AND REMOVE MOCK
+    if (activeImageIndex === imagesData.length - 1)
+      return setActiveImageIndex(0);
     setActiveImageIndex((prev) => prev + 1);
   };
 
   const handlePrev = () => {
-    if (activeImageIndex === 0) return setActiveImageIndex(images.length - 1);
+    // USE STATE AND REMOVE MOCK
+    if (activeImageIndex === 0)
+      return setActiveImageIndex(imagesData.length - 1);
     setActiveImageIndex((prev) => prev - 1);
   };
   const handleCancel = () => setActiveImageIndex(null);
@@ -86,18 +62,35 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
     if (!query) return IMAGES;
 
     const filteredImages = IMAGES.filter((i) => i.title.includes(query));
-    setImages(filteredImages);
+
+    // SET IMAGE STATE TO FILTERED IMAGES HERE AND REMOVE MOCK
+    imagesData = filteredImages;
+    forceUpdate();
   };
 
   // async functions
+  const getImages = async () => {
+    setLoading(true);
+
+    // GET IMAGES FROM FIRESTORE HERE
+    IMAGES = imagesData;
+    forceUpdate();
+    // MOCK END
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getImages();
+  }, []);
+
   const handleAdd = async ({ title, url }) => {
     setImgLoading(true);
-    const imageRef = await addDoc(collection(db, "albums", albumId, "images"), {
-      title,
-      url,
-      created: Timestamp.now(),
-    });
-    setImages((prev) => [{ id: imageRef.id, title, url }, ...prev]);
+
+    // ADD IMAGE TO FIRESTORE HERE AND REMOVE MOCK
+    imagesData.unshift({ id: Date.now(), title, url });
+    forceUpdate();
+    // MOCK END
 
     toast.success("Image added successfully.");
     setImgLoading(false);
@@ -105,14 +98,16 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
 
   const handleUpdate = async ({ title, url }) => {
     setImgLoading(true);
-    const imageRef = doc(db, "albums", albumId, "images", updateImageIntent.id);
 
-    await updateDoc(imageRef, {
-      title,
-      url,
+    // UPDATE IMAGE IN FIRESTORE WITH albumId HERE AND REMOVE MOCK
+    const image = { id: Date.now(), title, url };
+    const updatedImages = imagesData.map((i) => {
+      if (i.id === updateImageIntent.id) return image;
+      return i;
     });
-
-    getImages();
+    imagesData = updatedImages;
+    forceUpdate();
+    // MOCK END
 
     toast.success("Image updated successfully.");
     setImgLoading(false);
@@ -122,14 +117,15 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
   const handleDelete = async (e, id) => {
     e.stopPropagation();
 
-    await deleteDoc(doc(db, "albums", albumId, "images", id));
-    const filteredImages = images.filter((i) => i.id !== id);
-    setImages(filteredImages);
+    // DELETE IMAGE FROM FIRESTORE AND REMOVE MOCK
+    const updatedImages = imagesData.filter((i) => i.id !== id);
+    imagesData = updatedImages;
+    forceUpdate();
 
     toast.success("Image deleted successfully.");
   };
 
-  if (!images.length && !searchInput.current?.value && !loading) {
+  if (!imagesData.length && !searchInput.current?.value && !loading) {
     return (
       <>
         <div className={styles.top}>
@@ -137,35 +133,37 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
             <img src="/assets/back.png" alt="back" />
           </span>
           <h3>No images found in the album.</h3>
-          <button onClick={() => setAddImageIntent(!addImageIntent)}>
-            {!addImageIntent ? "Add image" : "Cancel"}
+
+          {/* TOGGLE STATE TO CONDITIONALLY RENDER ImageForm HERE */}
+          <button onClick={() => null}>
+            {/* SET THE BUTTON TEXT DYNAMICALLY */}
+
+            {!true ? "Add image" : "Cancel"}
           </button>
         </div>
-        {addImageIntent && (
-          <ImageForm
-            loading={imgLoading}
-            onAdd={handleAdd}
-            albumName={albumName}
-          />
-        )}
+        {/* CONDITIONALLY RENDER THE COMPONENT IF ADD BUTTON IS CLICKED */}
+        <ImageForm
+          loading={imgLoading}
+          onAdd={handleAdd}
+          albumName={albumName}
+        />
       </>
     );
   }
   return (
     <>
-      {(addImageIntent || updateImageIntent) && (
-        <ImageForm
-          loading={imgLoading}
-          onAdd={handleAdd}
-          albumName={albumName}
-          onUpdate={handleUpdate}
-          updateIntent={updateImageIntent}
-        />
-      )}
+      {/* CONDITIONALLY RENDER THE COMPONENT IF ADD BUTTON IS CLICKED or updateImageIntent IS NOT FALSY */}
+      <ImageForm
+        loading={imgLoading}
+        onAdd={handleAdd}
+        albumName={albumName}
+        onUpdate={handleUpdate}
+        updateIntent={updateImageIntent}
+      />
       {(activeImageIndex || activeImageIndex === 0) && (
         <Carousel
-          title={images[activeImageIndex].title}
-          url={images[activeImageIndex].url}
+          title={imagesData[activeImageIndex].title}
+          url={imagesData[activeImageIndex].url}
           onNext={handleNext}
           onPrev={handlePrev}
           onCancel={handleCancel}
@@ -201,11 +199,10 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
           </button>
         )}
         {!updateImageIntent && (
-          <button
-            className={`${addImageIntent && styles.active}`}
-            onClick={() => setAddImageIntent(!addImageIntent)}
-          >
-            {!addImageIntent ? "Add image" : "Cancel"}
+          // TOGGLE STATE TO CONDITIONALLY RENDER ImageForm HERE *
+          <button onClick={() => null}>
+            {/* SET THE BUTTON TEXT DYNAMICALLY */}
+            {true ? "Add image" : "Cancel"}
           </button>
         )}
       </div>
@@ -216,7 +213,7 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
       )}
       {!loading && (
         <div className={styles.imageList}>
-          {images.map((image, i) => (
+          {imagesData.map((image, i) => (
             <div
               key={image.id}
               className={styles.image}
