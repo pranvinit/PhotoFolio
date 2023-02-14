@@ -112,8 +112,14 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
       url,
     });
 
-    getImages();
+    const updatedImages = images.map((image) => {
+      if (image.id === imageRef.id) {
+        return { id: imageRef.id, title, url };
+      }
+      return image;
+    });
 
+    setImages(updatedImages);
     toast.success("Image updated successfully.");
     setImgLoading(false);
     setUpdateImageIntent(false);
