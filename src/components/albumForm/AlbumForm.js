@@ -17,7 +17,7 @@ export const AlbumForm = ({ onAdd, loading }) => {
     <div className={styles.albumForm}>
       <span>Create an album</span>
       <form onSubmit={handleSubmit}>
-        <input placeholder="Album Name" ref={albumNameInput} />
+        <input required placeholder="Album Name" ref={albumNameInput} />
         <button type="button" onClick={handleClear} disabled={loading}>
           Clear
         </button>

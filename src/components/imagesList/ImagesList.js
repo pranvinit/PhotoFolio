@@ -137,7 +137,10 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
             <img src="/assets/back.png" alt="back" />
           </span>
           <h3>No images found in the album.</h3>
-          <button onClick={() => setAddImageIntent(!addImageIntent)}>
+          <button
+            className={`${addImageIntent && styles.active}`}
+            onClick={() => setAddImageIntent(!addImageIntent)}
+          >
             {!addImageIntent ? "Add image" : "Cancel"}
           </button>
         </div>

@@ -46,8 +46,8 @@ export const ImageForm = ({
       </span>
 
       <form onSubmit={handleSubmit}>
-        <input placeholder="Title" ref={imageTitleInput} />
-        <input placeholder="Image URL" ref={imageUrlInput} />
+        <input required placeholder="Title" ref={imageTitleInput} />
+        <input required placeholder="Image URL" ref={imageUrlInput} />
         <div className={styles.actions}>
           <button type="button" onClick={handleClear} disabled={loading}>
             Clear
