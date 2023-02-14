@@ -137,7 +137,7 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
           {/* TOGGLE STATE TO CONDITIONALLY RENDER ImageForm HERE */}
           <button onClick={() => null}>
             {/* SET THE BUTTON TEXT DYNAMICALLY */}
-
+            {/* DYNAMICALLY ADD a "active" CLASS IF THE ADD BUTTON IS CLICKED */}
             {!true ? "Add image" : "Cancel"}
           </button>
         </div>
@@ -201,6 +201,7 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
         {!updateImageIntent && (
           // TOGGLE STATE TO CONDITIONALLY RENDER ImageForm HERE *
           <button onClick={() => null}>
+            {/* DYNAMICALLY ADD a "active" CLASS IF THE ADD BUTTON IS CLICKED */}
             {/* SET THE BUTTON TEXT DYNAMICALLY */}
             {true ? "Add image" : "Cancel"}
           </button>

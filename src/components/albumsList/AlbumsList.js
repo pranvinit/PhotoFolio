@@ -54,7 +54,7 @@ export const AlbumsList = () => {
     toast.success("Album added successfully.");
   };
 
-  // ADD STATES TO CONDITIONALLY RENDER IMAGESLIST IF AN ALBUM IS SELECTED AND ALBUMFORM IF THE ADD BUTTON IS CLICKED
+  // ADD STATES TO CONDITIONALLY RENDER IMAGESLIST IF AN ALBUM IS SELECTED AND AlbumForm IF THE ADD BUTTON IS CLICKED
 
   // USE STATE AND REMOVE MOCK
   if (albumsData.length === 0 && !loading) {
@@ -62,7 +62,8 @@ export const AlbumsList = () => {
       <>
         <div className={styles.top}>
           <h3>No albums found.</h3>
-          {/* TOGGLE STATE TO CONDITIONALLY RENDER ALBUMFORM HERE */}
+          {/* TOGGLE STATE TO CONDITIONALLY RENDER AlbumForm HERE */}
+          {/* DYNAMICALLY ADD a "active" CLASS IF THE ADD BUTTON IS CLICKED */}
           <button onClick={() => null}>
             {/* SET THE BUTTON TEXT DYNAMICALLY */}
             {true ? "Add album" : "Cancel"}
@@ -91,6 +92,7 @@ export const AlbumsList = () => {
           <h3>Your albums</h3>
           {/* TOGGLE STATE TO CONDITIONALLY RENDER AlbumForm HERE */}
           <button onClick={() => null}>
+            {/* DYNAMICALLY ADD a "active" CLASS IF THE ADD BUTTON IS CLICKED */}
             {/* SET THE BUTTON TEXT DYNAMICALLY */}
             {true ? "Add album" : "Cancel"}
           </button>
