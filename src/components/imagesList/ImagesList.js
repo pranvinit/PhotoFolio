@@ -21,6 +21,9 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 
+// storing images
+let IMAGES;
+
 // mock data
 // import { imagesData } from "../../static/mock";
 
@@ -43,6 +46,7 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
       ...doc.data(),
     }));
     setImages(imagesData);
+    IMAGES = imagesData;
     setLoading(false);
   };
 
@@ -79,9 +83,9 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
 
   const handleSearch = async () => {
     const query = searchInput.current.value;
-    if (!query) return getImages();
+    if (!query) return IMAGES;
 
-    const filteredImages = images.filter((i) => i.title.includes(query));
+    const filteredImages = IMAGES.filter((i) => i.title.includes(query));
     setImages(filteredImages);
   };
 
