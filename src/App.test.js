@@ -29,6 +29,7 @@ jest.mock("firebase/firestore", () => {
   };
 });
 
+// Testing app logic and functionality
 describe("App logic and functionality is implemented correctly", () => {
   test("AlbumForm is conditionally rendered when the button is clicked", async () => {
     user.setup();
@@ -117,8 +118,10 @@ describe("App logic and functionality is implemented correctly", () => {
   });
 });
 
+// Testing firebase integration
 describe("Integration with firebase is implemented correctly", () => {
   test("App renders the mock data correctly", async () => {
+    user.setup();
     render(<App />);
     const albumEl = await screen.findByText(/test album/i);
     expect(albumEl).toBeInTheDocument();
@@ -213,6 +216,7 @@ describe("Integration with firebase is implemented correctly", () => {
   });
 });
 
+// Testing app state and side effects
 describe("App handles State and side effects correctly", () => {
   test("Default values in update forms are updated dynamically", async () => {
     user.setup();
