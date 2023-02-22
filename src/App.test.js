@@ -19,7 +19,7 @@ jest.mock("firebase/firestore", () => {
       ],
     }),
 
-    addDocs: (doc, options) => ({
+    addDoc: (doc, options) => ({
       id: Date.now(),
     }),
     updateDoc: (doc, options) => ({
