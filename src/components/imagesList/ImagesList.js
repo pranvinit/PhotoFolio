@@ -13,7 +13,7 @@ import {
   getDocs,
   addDoc,
   deleteDoc,
-  updateDoc,
+  setDoc,
   Timestamp,
   query,
   orderBy,
@@ -107,7 +107,7 @@ export const ImagesList = ({ albumId, albumName, onBack }) => {
     setImgLoading(true);
     const imageRef = doc(db, "albums", albumId, "images", updateImageIntent.id);
 
-    await updateDoc(imageRef, {
+    await setDoc(imageRef, {
       title,
       url,
     });
